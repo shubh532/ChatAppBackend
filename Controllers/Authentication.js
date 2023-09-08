@@ -60,3 +60,13 @@ exports.postLogin = async (req, res, next) => {
         res.status(500).json({ message: "Error Occurred while Login", error: err.message })
     }
 }
+
+exports.getUsers=async(req, res, next)=>{
+    try{
+        const users = await UserDB.findAll()
+        res.status(200).json({users:users})
+    }catch(err){
+        console.log(err, "form getUser")
+        res.status(500).json({message:"Somthing Went Wrong"})
+    }
+}
