@@ -49,7 +49,7 @@ exports.postLogin = async (req, res, next) => {
                 if (err) {
                     throw new Error({ message: "Somthing Went Worng" })
                 } if (result) {
-                    res.status(200).json({ message: "Successfully Login", tokenID: generateAccessToken(ExistUser.id, ExistUser.email) })
+                    res.status(200).json({ message: "Successfully Login", userID: ExistUser.id, tokenID: generateAccessToken(ExistUser.id, ExistUser.email) })
                 } else {
                     res.status(401).json({ message: "Incorrect Password", success: false })
                 }
@@ -61,12 +61,13 @@ exports.postLogin = async (req, res, next) => {
     }
 }
 
-exports.getUsers=async(req, res, next)=>{
-    try{
-        const users = await UserDB.findAll()
-        res.status(200).json({users:users})
-    }catch(err){
+exports.getUsers = async (req, res, next) => {
+    const userid = req.params.userid
+    try {
+        const users = await UserDB.findAll({where:{[Op.not]:{id:userid}}})
+        res.status(200).json({ users: users })
+    } catch (err) {
         console.log(err, "form getUser")
-        res.status(500).json({message:"Somthing Went Wrong"})
+        res.status(500).json({ message: "Somthing Went Wrong" })
     }
 }
