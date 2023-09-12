@@ -27,9 +27,18 @@ exports.postMesssages = async (req, res, next) => {
 
 exports.getOneToOneMessages = async (req, res, next) => {
     const { userId, user2Id } = req.params
+    console.log(userId)
     try {
-        const messages = await MessagesDB.findAll({ where: { userId } })
-        console.log(messages, "messages")
+        const messages = await MessagesDB.findAll({
+            where: {
+                [Op.or]:
+                    [
+                        { [Op.and]: [{ userId: userId }, { sent_to: user2Id },] },
+                        { [Op.and]: [{ userId: user2Id }, { sent_to: userId },] }
+                    ]
+            },
+            order: [['createdAt', 'ASC']]
+        })
         res.status(201).json({ messages: messages })
     } catch (err) {
         console.log(err)
