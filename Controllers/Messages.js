@@ -12,13 +12,13 @@ exports.postMesssages = async (req, res, next) => {
     const { message, date, userID } = req.body
     console.log({ message, date, userID })
     try {
-        await MessagesDB.create({
+        const msg = await MessagesDB.create({
             sent_to: send_to,
             message: message,
             time_stamp: date,
             userId: userID
         })
-        res.status(200).json({ status: true })
+        res.status(200).json({ message: msg, status: true })
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Somthing Went Wrong" })
@@ -27,7 +27,7 @@ exports.postMesssages = async (req, res, next) => {
 
 exports.getOneToOneMessages = async (req, res, next) => {
     const { userId, user2Id } = req.params
-    console.log(userId)
+    // console.log(userId, user2Id,"<<<<<<<<<<<<")
     try {
         const messages = await MessagesDB.findAll({
             where: {
@@ -43,5 +43,15 @@ exports.getOneToOneMessages = async (req, res, next) => {
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Somthing Went Wrong" })
+    }
+}
+
+exports.getAllMessage = async (req, res, next) => {
+    const { userId } = req.params
+    try {
+        const messages = await MessagesDB.findAll({ where: { userId } })
+        console.log(messages)
+    } catch (err) {
+        console.log(err, "ERRRRRRRRRRR")
     }
 }
