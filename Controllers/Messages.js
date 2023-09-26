@@ -46,12 +46,14 @@ exports.getOneToOneMessages = async (req, res, next) => {
     }
 }
 
-exports.getAllMessage = async (req, res, next) => {
-    const { userId } = req.params
+exports.getGroupMessages = async (req, res, next) => {
+    const { groupId } = req.params
     try {
-        const messages = await MessagesDB.findAll({ where: { userId } })
-        console.log(messages)
+        const messages = await MessagesDB.findAll({ where: { sent_to: groupId } })
+        res.status(201).json({ messages: messages })
     } catch (err) {
         console.log(err, "ERRRRRRRRRRR")
+        res.status(500).json({ message: "Somthing Went Wrong" })
+
     }
 }

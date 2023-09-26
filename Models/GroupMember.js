@@ -6,7 +6,7 @@ const group_members = sequelize.define("group_members", {
     id: {
         type: Sequelize.UUID,
         allowNull: false,
-        defaultValues: Sequelize.UUIDV4,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true
     }
 })

@@ -1,4 +1,6 @@
 const UserDB = require("../Models/User")
+const GroupDB = require("../Models/Group")
+const Group_Members = require("../Models/GroupMember")
 const { Op } = require("sequelize")
 const bcrypt = require("bcrypt")
 const saltround = 10
@@ -64,8 +66,25 @@ exports.postLogin = async (req, res, next) => {
 exports.getUsers = async (req, res, next) => {
     const userid = req.params.userid
     try {
-        const users = await UserDB.findAll({where:{[Op.not]:{id:userid}}})
-        res.status(200).json({ users: users })
+        const user = await UserDB.findByPk(userid, {
+            attributes: ["id", "Name", "email", "mobile"],
+            include: {
+                attributes: ["id", "Name"],
+                model: GroupDB,
+                through: {
+                    model: Group_Members,
+                    attributes: ["id"]
+                }
+            }
+        }
+        )
+        const users = await UserDB.findAll(
+            {
+                where: { [Op.not]: { id: userid } },
+                attributes: ["id", "Name", "email", "mobile"]
+            }
+        )
+        res.status(200).json({ userDetails: user, allUsers: users })
     } catch (err) {
         console.log(err, "form getUser")
         res.status(500).json({ message: "Somthing Went Wrong" })

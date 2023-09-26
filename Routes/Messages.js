@@ -7,4 +7,5 @@ const MessagesController = require("../Controllers/Messages")
 MessagesRouter.get("/", MessagesController.getMessages)
 MessagesRouter.post("/sent_to/:send_to", MessagesController.postMesssages)
 MessagesRouter.get("/:userId/:user2Id", MessagesController.getOneToOneMessages)
+MessagesRouter.get("/:groupId", MessagesController.getGroupMessages)
 module.exports = MessagesRouter 

@@ -1,0 +1,12 @@
+const express = require("express")
+
+const GroupRoutes = express.Router()
+
+const groupController = require("../Controllers/Group")
+
+GroupRoutes.post("/:userId", groupController.postCreateGroup)
+GroupRoutes.get("/:groupId", groupController.getGroupMembers)
+
+
+
+module.exports = GroupRoutes
