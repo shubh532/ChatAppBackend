@@ -73,7 +73,7 @@ exports.getUsers = async (req, res, next) => {
                 model: GroupDB,
                 through: {
                     model: Group_Members,
-                    attributes: ["id"]
+                    attributes: ["id", "admin"]
                 }
             }
         }
