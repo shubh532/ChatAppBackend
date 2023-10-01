@@ -13,14 +13,27 @@ exports.postCreateGroup = async (req, res, next) => {
         })
         const { id } = Group
         const Users = users.map(user => ({ userId: user.userId, groupId: id }))
-        const GroupUser = await GroupMembersDB.bulkCreate([...Users, { userId: Id, groupId: id }])
+        const GroupUser = await GroupMembersDB.bulkCreate([...Users, { userId: Id, groupId: id, admin: true }])
         res.status(200).json({ groupName: Group, users: GroupUser })
     } catch (err) {
         console.log(err, "While Creating Group")
+        res.status(500).json({ message: "Error On Server" })
     }
-    res.end()
 }
 
+exports.postUserToExistGroup = async (req, res, next) => {
+    const { groupId, users } = req.body
+    const Users = users.map(user => ({ userId: user.userId, admin: user.admin, groupId: groupId }))
+    try {
+        const AddedUsers = await GroupMembersDB.bulkCreate(
+            [...Users]
+        )
+        res.status(200).json({ users: AddedUsers })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Error On Server" })
+    }
+}
 
 exports.getGroupMembers = async (req, res, next) => {
     const groupId = req.params.groupId

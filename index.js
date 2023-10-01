@@ -32,7 +32,7 @@ Messages.belongsTo(Group)
 Group.belongsToMany(User, { through: Group_Members })
 User.belongsToMany(Group, { through: Group_Members })
 
-ConnectDB.sync({ alter: true })
+ConnectDB.sync()
     .then(() => {
         app.listen(4000, "localhost", () => {
             console.log("http://localhost:4000")

@@ -8,6 +8,7 @@ GroupRoutes.post("/:userId", groupController.postCreateGroup)
 GroupRoutes.get("/:groupId", groupController.getGroupMembers)
 GroupRoutes.post("/admin/:userId", groupController.postMakeAdmin)
 GroupRoutes.post("/admin/remove/:userId", groupController.postRemoveAsAdmin)
+GroupRoutes.post("/addusers/:groupId", groupController.postUserToExistGroup)
 
 
 

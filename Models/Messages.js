@@ -13,7 +13,7 @@ const Messages = sequelize.define("messages", {
         type: Sequelize.CHAR,
     },
     message: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
     },
     time_stamp:{
         type:Sequelize.DATE
